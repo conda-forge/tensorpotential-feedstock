@@ -1,9 +1,12 @@
-{% set name = "tensorpotential" %}
-{% set version = "0.2.0" %}
+schema_version: 1
+
+context:
+  name: tensorpotential
+  version: "0.2.0"
 
 package:
-  name: {{ name|lower }}
-  version: {{ version }}
+  name: ${{ name|lower }}
+  version: ${{ version }}
 
 source:
   url: https://github.com/ICAMS/TensorPotential/archive/8776209fec766bfee4268e7e0b82a4ddb88d7cbe.tar.gz
@@ -12,43 +15,41 @@ source:
     - python.patch
 
 build:
+  number: 5
   noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
-  number: 4
+  script: ${{ PYTHON }} -m pip install . -vv
 
 requirements:
   host:
-    - python {{ python_min }}
+    - python ${{ python_min }}.*
     - pip
     - setuptools
   run:
-    - python >={{ python_min }},<3.13
+    - python >=${{ python_min }},<3.13
     - scipy
     - tensorflow
     - numpy
     - pandas
     - ase
 
-test:
-  imports:
-    - tensorpotential
-  requires:
-    - pip
-    - python {{ python_min }}
-  commands:
-    - pip check
+tests:
+  - python:
+      imports:
+        - tensorpotential
+      pip_check: true
+      python_version: ${{ python_min }}
 
 about:
-  home: https://github.com/ICAMS/TensorPotential
-  summary: 'TensorFlow based interface for ML potentials development, fitting and evaluation'
+  summary: TensorFlow based interface for ML potentials development, fitting and evaluation
   description: |
     Tensorpotential is a TensorFlow based tool for development, fitting
     ML interatomic potentials from electronic structure calculations data
     and perform computations using these potentials.
-  license: ASL
+  license: ADSL
   license_file: ASL.txt
-  doc_url: https://github.com/ICAMS/TensorPotential
-  dev_url: https://github.com/ICAMS/TensorPotential
+  homepage: https://github.com/ICAMS/TensorPotential
+  repository: https://github.com/ICAMS/TensorPotential
+  documentation: https://github.com/ICAMS/TensorPotential
 
 extra:
   recipe-maintainers:
